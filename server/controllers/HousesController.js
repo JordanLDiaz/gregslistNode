@@ -6,6 +6,7 @@ export class HousesController extends BaseController {
     super('api/houses')
     this.router
       .get('', this.getAll)
+      .get('/:houseId', this.getHouseById)
       .post('', this.create)
       .delete('/:houseId', this.remove)
       .put('/:houseId', this.update)
@@ -19,6 +20,17 @@ export class HousesController extends BaseController {
       next(error)
     }
   }
+
+  async getHouseById(req, res, next) {
+    try {
+      const houseId = req.params.houseId
+      const house = await housesService.getHouseById(houseId)
+      return res.send(house)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async create(req, res, next) {
     try {
       const house = await housesService.create(req.body)

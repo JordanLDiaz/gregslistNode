@@ -7,16 +7,26 @@ class HousesService {
     return houses
   }
 
+  async getHouseById(houseId) {
+    const house = await dbContext.Houses.findById(houseId)
+    if (!house) {
+      throw new BadRequest('No house found at this id.')
+    }
+    return house
+  }
+
   async create(houseData) {
     const newHouse = await dbContext.Houses.create(houseData)
     return newHouse
   }
+
   async remove(houseId) {
     const house = await dbContext.Houses.findById(houseId)
     if (!house) throw new BadRequest('no house at id: ' + houseId)
     await house.remove()
     return `deleted ${house.bathrooms} ${house.bedrooms}`
   }
+
   async update(houseId, houseData) {
     const original = await dbContext.Houses.findById(houseId)
     if (!original) throw new BadRequest('no house at id: ' + houseId)

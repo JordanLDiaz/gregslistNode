@@ -7,6 +7,7 @@ export class JobsController extends BaseController {
     super('api/jobs')
     this.router
       .get('', this.getAll)
+      .get('/:jobId', this.getJobById)
       .post('', this.create)
       .delete('/:jobId', this.remove)
       .put('/:jobId', this.update)
@@ -17,6 +18,16 @@ export class JobsController extends BaseController {
       const query = req.query
       const jobs = await jobsService.getAll(query)
       return res.send(jobs)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getJobById(req, res, next) {
+    try {
+      const jobId = req.params.jobId
+      const job = await jobsService.getJobById(jobId)
+      return res.send(job)
     } catch (error) {
       next(error)
     }

@@ -7,6 +7,7 @@ export class CarsController extends BaseController {
     super('api/cars')
     this.router
       .get('', this.getAll)
+      .get('/:carId', this.getCarById)
       .post('', this.create)
       .delete('/:carId', this.remove)
       .put('/:carId', this.update)
@@ -20,6 +21,17 @@ export class CarsController extends BaseController {
       next(error)
     }
   }
+
+  async getCarById(req, res, next) {
+    try {
+      const carId = req.params.carId
+      const car = await carsService.getCarById(carId)
+      return res.send(car)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async create(req, res, next) {
     try {
       const car = await carsService.create(req.body)
@@ -28,6 +40,7 @@ export class CarsController extends BaseController {
       next(error)
     }
   }
+
   async remove(req, res, next) {
     try {
       const message = await carsService.remove(req.params.carId)

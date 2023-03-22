@@ -7,6 +7,14 @@ class CarsService {
     return cars
   }
 
+  async getCarById(carId) {
+    const car = await dbContext.Cars.findById(carId)
+    if (!car) {
+      throw new BadRequest('No car found at this id.')
+    }
+    return car
+  }
+
   async create(carData) {
     const newCar = await dbContext.Cars.create(carData)
     return newCar
